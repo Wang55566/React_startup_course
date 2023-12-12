@@ -8,7 +8,7 @@ import ExpenseList from "./expense-tracker/components/ExpenseList";
 import ExpenseFilter from "./expense-tracker/components/ExpenseFilter";
 import ExpenseForm from "./expense-tracker/components/ExpenseForm";
 
-export const category = ["Transportation", "Housing", "Electronics"];
+export const category = ["Transportation", "Housing", "Electronics"] as const;
 
 function App() {
   const onSelected = (item: string) => {
