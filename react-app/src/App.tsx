@@ -4,6 +4,11 @@ import Button from "./components/Button";
 import { useState } from "react";
 import Like from "./components/Like";
 import Form from "./components/Form";
+import ExpenseList from "./expense-tracker/components/ExpenseList";
+import ExpenseFilter from "./expense-tracker/components/ExpenseFilter";
+import ExpenseForm from "./expense-tracker/components/ExpenseForm";
+
+export const category = ["Transportation", "Housing", "Electronics"];
 
 function App() {
   const onSelected = (item: string) => {
@@ -12,13 +17,13 @@ function App() {
   let items = ["Taipei", "Taoyuan", "Taichung", "Tainan", "Kaohsiung"];
 
   const [drink, setDrink] = useState({
-    type: 'coke',
+    type: "coke",
     price: 30,
     location: {
       x: 0,
-      y: 0
-    }
-  })
+      y: 0,
+    },
+  });
 
   const handleDrink = () => {
     // const newDrink = {
@@ -28,11 +33,33 @@ function App() {
     // setDrink(newDrink)
     setDrink({
       ...drink,
-      location: {...drink.location, x: 10}
-    })
-  }
+      location: { ...drink.location, x: 10 },
+    });
+  };
 
   const [display, setDisplay] = useState(false);
+
+  const [expenses, setExpenses] = useState([
+    {
+      id: 1,
+      decription: "Buy a car",
+      amount: 10000,
+      category: "Transportation",
+    },
+    { id: 2, decription: "Buy a house", amount: 100000, category: "Housing" },
+    { id: 3, decription: "Buy a book", amount: 100, category: "Education" },
+    {
+      id: 4,
+      decription: "Buy a computer",
+      amount: 1000,
+      category: "Electronics",
+    },
+  ]);
+
+  const [selectedCategory, setSelectedCategory ] = useState("")
+
+  const visibleExpense = selectedCategory ? expenses.filter( expense => expense.category === selectedCategory): expenses
+
   return (
     <>
       <div>
@@ -67,8 +94,24 @@ function App() {
           Children
         </Button>
       </div>
-      <Like handleOnClick={() => {console.log('clicked')}}/>
+      <Like
+        handleOnClick={() => {
+          console.log("clicked");
+        }}
+      />
       <Form />
+      <div className="mb-3 mt-3">
+        <ExpenseFilter onSeletCategory={(category) => setSelectedCategory(category)}/>
+      </div>
+      <ExpenseList
+        expenses={visibleExpense}
+        onDelete={(id) =>
+          setExpenses(expenses.filter((expense) => expense.id !== id))
+        }
+      />
+      <div className="mt-5">
+        <ExpenseForm />
+      </div>
     </>
   );
 }
